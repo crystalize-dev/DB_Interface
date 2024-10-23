@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Customers {
+  CustomerID  Int       @id(map: "PK__Customer__A4AE64B8F83975B8") @default(autoincrement())
+  FirstName   String?   @db.NVarChar(50)
+  LastName    String?   @db.NVarChar(50)
+  PhoneNumber String?   @db.NVarChar(15)
+  Email       String?   @db.NVarChar(100)
+  BirthDate   DateTime? @db.Date
+  Address     String?   @db.NVarChar(250)
+  Orders      Orders[]
+}
+
+model Employees {
+  EmployeeID Int       @id(map: "PK__Employee__7AD04FF12D1D9377") @default(autoincrement())
+  FirstName  String?   @db.NVarChar(50)
+  LastName   String?   @db.NVarChar(50)
+  Position   String?   @db.NVarChar(50)
+  HireDate   DateTime? @db.Date
+  Salary     Decimal?  @db.Decimal(10, 2)
+  Orders     Orders[]
+}
+
+model OrderDetails {
+  OrderDetailID Int       @id(map: "PK__OrderDet__D3B9D30C4FD365CF") @default(autoincrement())
+  OrderID       Int?
+  ProductID     Int?
+  Quantity      Int?
+  Price         Decimal?  @db.Decimal(10, 2)
+  Orders        Orders?   @relation(fields: [OrderID], references: [OrderID], onDelete: NoAction, onUpdate: NoAction, map: "FK__OrderDeta__Order__412EB0B6")
+  Products      Products? @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "FK__OrderDeta__Produ__4222D4EF")
+}
+
+model Orders {
+  OrderID      Int            @id(map: "PK__Orders__C3905BAFE7BA8F08") @default(autoincrement())
+  CustomerID   Int?
+  EmployeeID   Int?
+  OrderDate    DateTime?      @db.Date
+  TotalAmount  Decimal?       @db.Decimal(10, 2)
+  OrderDetails OrderDetails[]
+  Customers    Customers?     @relation(fields: [CustomerID], references: [CustomerID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Orders__Customer__3D5E1FD2")
+  Employees    Employees?     @relation(fields: [EmployeeID], references: [EmployeeID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Orders__Employee__3E52440B")
+}
+
+model Products {
+  ProductID     Int            @id(map: "PK__Products__B40CC6ED5B1403E3") @default(autoincrement())
+  ProductName   String?        @db.NVarChar(100)
+  Category      String?        @db.NVarChar(50)
+  Price         Decimal?       @db.Decimal(10, 2)
+  StockQuantity Int?
+  OrderDetails  OrderDetails[]
+}
+
+model sysdiagrams {
+  name         String @db.NVarChar(128)
+  principal_id Int
+  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B61B2064C16") @default(autoincrement())
+  version      Int?
+  definition   Bytes?
+
+  @@unique([principal_id, name], map: "UK_principal_name")
+}

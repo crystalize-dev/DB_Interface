@@ -9,18 +9,11 @@ const config = {
     theme: {
         extend: {
             colors: {
-                primary: {
-                    DEFAULT: 'var(--primary)',
-                    dark: 'var(--primary-dark)'
-                },
+                primary: 'var(--primary)',
                 light: {
                     bg: 'var(--bg-full)',
                     object: 'var(--bg-object)'
                 },
-                dark: {
-                    bg: 'var(--bg-full-dark)',
-                    object: 'var(--bg-object-dark)'
-                }
             }
         }
     },

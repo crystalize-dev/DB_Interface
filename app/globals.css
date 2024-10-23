@@ -18,9 +18,6 @@ button {
 }
 
 :root {
-    --bg-full-dark: #1E1E1E;
-    --bg-object-dark: #292929;
-
     --bg-full: #F5F5F5;
     --bg-object: #dfdfdf;
 
