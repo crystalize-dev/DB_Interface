@@ -1,50 +1,50 @@
 export type CustomerType = {
-    CustomerID: Number;
-    FirstName?: String;
-    LastName?: String;
-    PhoneNumber?: String;
-    Email?: String;
+    CustomerID: number;
+    FirstName?: string;
+    LastName?: string;
+    Phonenumber?: string;
+    Email?: string;
     BirthDate?: Date;
-    Address?: String;
+    Address?: string;
     Orders: OrderType[];
 };
 
 export type OrderType = {
-    OrderID: Number;
-    CustomerID?: Number;
-    EmployeeID?: Number;
+    OrderID: number;
+    CustomerID?: number;
+    EmployeeID?: number;
     OrderDate?: Date;
-    TotalAmount?: Number;
+    TotalAmount?: number;
     OrderDetails: OrderDetailsType[];
     Customers?: CustomerType;
     Employees?: EmployeeType;
 };
 
 export type OrderDetailsType = {
-    OrderDetailID: Number;
-    OrderID?: Number;
-    ProductID?: Number;
-    Quantity?: Number;
-    Price?: Number;
+    OrderDetailID: number;
+    OrderID?: number;
+    ProductID?: number;
+    Quantity?: number;
+    Price?: number;
     Orders?: OrderType;
     Products?: ProductType;
 };
 
 export type EmployeeType = {
-    EmployeeID: Number;
-    FirstName?: String;
-    LastName?: String;
-    Position?: String;
+    EmployeeID: number;
+    FirstName?: string;
+    LastName?: string;
+    Position?: string;
     HireDate?: Date;
-    Salary?: Number;
+    Salary?: number;
     Orders: OrderType;
 };
 
 export type ProductType = {
-    ProductID: Number;
-    ProductName?: String;
-    Category?: String;
-    Price?: Number;
-    StockQuantity?: Number;
-    OrderDetails: OrderDetailsType;
+    ProductID?: number;
+    ProductName?: string;
+    Category?: string;
+    Price?: number;
+    StockQuantity?: number;
+    OrderDetails?: OrderDetailsType;
 };

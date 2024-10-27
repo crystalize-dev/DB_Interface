@@ -27,7 +27,7 @@ export const customAxios = async (
             .then((res) => {
                 setFetching(false);
 
-                if (res.status === 200) {
+                if (res.status === 200 || res.status === 201) {
                     options?.actionOnSuccess?.(res.data);
                     return res.data;
                 } else {

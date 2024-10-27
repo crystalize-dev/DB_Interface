@@ -21,8 +21,10 @@ button {
     --bg-full: #F5F5F5;
     --bg-object: #dfdfdf;
 
+    --bg-dark: #031738;
+    --bg-dark-object: #1d318a;
+
     --primary: #5858e6;
-    --primary-dark: #3232aa;
 
     scrollbar-width: thin;
     background-color: var(--bg-full);

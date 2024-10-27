@@ -28,7 +28,7 @@ const ConfirmWindow = ({
         <>
             {visible && (
                 <div
-                    className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-black/70"
+                    className="absolute left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black/70"
                     onMouseDown={() => setVisible(false)}
                 >
                     <div
@@ -41,7 +41,7 @@ const ConfirmWindow = ({
                                 onClick={handleAccept}
                                 type="button"
                                 variant="colored"
-                                buttonClassName="bg-green-500"
+                                buttonClassName="!bg-green-500"
                             >
                                 Подтвердить
                             </Button>

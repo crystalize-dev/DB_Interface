@@ -1,19 +1,27 @@
 'use client';
 import React, { useContext, useState } from 'react';
-import { DataContext } from '../context/DataContext';
 import Button from '../components/UI/Button';
 import Icon from '../components/Icon/Icon';
 import Link from 'next/link';
 import ConfirmWindow from '../components/ConfirmWindow';
+import { ProductsContext } from '../context/ProductsContext';
 
 const ProductsPage = () => {
-    const { getProducts, deleteProduct } = useContext(DataContext);
-    const products = getProducts();
+    const { products, removeProduct, getCategories } =
+        useContext(ProductsContext);
 
+    const [fetching, setFetching] = useState(false);
     const [confirmWindowsVisible, setConfirmWindowsVisible] = useState(false);
-    const [productToDelete, setProductToDelete] = useState<null | Number>(null);
+    const [productIDToDelete, setProductToDelete] = useState<null | number>(
+        null
+    );
 
-    const handleConfirmWindow = (productID: Number) => {
+    const handleConfirmWindow = (
+        e: React.MouseEvent<SVGSVGElement, MouseEvent>,
+        productID: number
+    ) => {
+        e.stopPropagation();
+
         if (!productID) return;
 
         setProductToDelete(productID);
@@ -26,69 +34,91 @@ const ProductsPage = () => {
                 visible={confirmWindowsVisible}
                 setVisible={setConfirmWindowsVisible}
                 funcOnSuccess={
-                    productToDelete
-                        ? () => deleteProduct(productToDelete)
+                    productIDToDelete
+                        ? () => removeProduct(productIDToDelete, setFetching)
                         : undefined
                 }
                 funcOnFailure={() => setProductToDelete(null)}
             />
 
-            <h1 className="text-2xl font-bold text-primary">Товары:</h1>
-
-            <hr className="w-full border border-solid border-primary" />
-
-            {products.length > 0 && (
-                <div className="flex w-full rounded-md bg-primary p-4 text-lg font-bold text-white">
-                    <h3 className="w-1/3">Категория</h3>
-                    <h2 className="w-1/3">Название</h2>
-                    <p className="w-1/3">Цена</p>
-                </div>
-            )}
-
-            <div className="scrollable mt-4 flex w-full grow flex-col gap-8">
-                {products.length > 0 ? (
-                    products.map(
-                        (product) =>
-                            product && (
-                                <div
-                                    key={String(product.ProductID)}
-                                    className="flex items-center rounded-md border border-solid border-black/30 p-4"
-                                >
-                                    <h3 className="w-1/3">
-                                        {product.Category}
-                                    </h3>
-                                    <h2 className="w-1/3">
-                                        {product.ProductName}
-                                    </h2>
-                                    <p className="w-1/3">
-                                        {String(product.Price)} руб.
-                                    </p>
-
-                                    <Icon
-                                        className="!size-8 rounded-md bg-red-500 p-2 text-white"
-                                        icon="close"
-                                        onClick={() =>
-                                            handleConfirmWindow(
-                                                product.ProductID
-                                            )
-                                        }
-                                    />
-                                </div>
-                            )
-                    )
-                ) : (
-                    <div className="flex h-full w-full items-center justify-center">
-                        <p className="text-4xl text-zinc-500">Ничего нет!</p>
-                    </div>
-                )}
-            </div>
-
-            <div className="mt-auto flex w-full gap-4">
+            <div className="flex items-center justify-between">
+                <h1 className="text-dark-bg text-4xl font-bold">Товары</h1>
                 <Link href="/products/add">
-                    <Button type="button" variant="colored">
+                    <Button
+                        type="button"
+                        disabled={fetching}
+                        variant="colored"
+                        buttonClassName="flex items-center gap-1 bg-dark-bg hover:bg-primary transition-all"
+                    >
+                        <Icon icon="plus" className="!size-5" />
                         Добавить товар
                     </Button>
                 </Link>
+            </div>
+
+            <div className="flex w-full flex-wrap gap-4">
+                <div className="flex flex-col gap-2 rounded-md border border-solid border-black/20 bg-light-bg p-4">
+                    <h1 className="text-xl text-zinc-500">Всего товаров</h1>
+                    <p className="text-2xl">{products.length}</p>
+                </div>
+                <div className="flex flex-col gap-2 rounded-md border border-solid border-black/20 bg-light-bg p-4">
+                    <h1 className="text-xl text-zinc-500">Всего категорий</h1>
+                    <p className="text-2xl">{getCategories().length}</p>
+                </div>
+            </div>
+
+            <div className="mt-8 flex h-fit w-full flex-col overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
+                <div className="from-dark-bg to-dark-object flex w-full items-center bg-gradient-to-br p-4 text-white">
+                    <h3 className="w-1/3">Наименование</h3>
+                    <h2 className="w-1/3">Категория</h2>
+                    <p className="w-1/3">Цена</p>
+                </div>
+
+                <div className="scrollable flex w-full grow flex-col">
+                    {products.length > 0 ? (
+                        products.map(
+                            (product) =>
+                                product && (
+                                    <Link
+                                        href={`/products/edit/${product.ProductID}`}
+                                        key={String(product.ProductID)}
+                                        className="relative flex w-full items-center border-b border-solid border-black/10 p-8 transition-all last:border-none hover:bg-white hover:shadow-sm"
+                                    >
+                                        <h2 className="w-1/3">
+                                            {product.ProductName}
+                                        </h2>
+                                        <h3 className="w-1/3">
+                                            {product.Category}
+                                        </h3>
+                                        <p className="w-1/3">
+                                            {String(product.Price)} руб.
+                                        </p>
+
+                                        <Icon
+                                            className="absolute right-4 !size-10 rounded-md p-2 text-red-500"
+                                            icon="close"
+                                            disabled={fetching}
+                                            onMouseDown={
+                                                fetching
+                                                    ? undefined
+                                                    : (e) =>
+                                                          handleConfirmWindow(
+                                                              e,
+                                                              product.ProductID as number
+                                                          )
+                                            }
+                                        />
+                                    </Link>
+                                )
+                        )
+                    ) : (
+                        <div className="flex h-full w-full items-center justify-center">
+                            <p className="text-4xl text-zinc-500">
+                                Ничего нет!
+                            </p>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

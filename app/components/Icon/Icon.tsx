@@ -3,6 +3,7 @@ import { IconType, icons } from './icon-database';
 
 interface IconProps extends React.HTMLAttributes<SVGSVGElement> {
     icon: IconType;
+    disabled?: boolean;
     fill?: string;
     weight?: 'normal' | 'bold' | 'thin';
 }
@@ -11,6 +12,7 @@ const Icon: React.FC<IconProps> = ({
     icon,
     fill = 'none',
     className = '',
+    disabled = false,
     weight = 'normal',
     ...props
 }) => {
@@ -29,7 +31,7 @@ const Icon: React.FC<IconProps> = ({
             viewBox="0 0 24 24"
             strokeWidth={weightMapping[weight]}
             stroke="currentColor"
-            className={`h-5 w-5 cursor-pointer select-none transition-all ${className}`}
+            className={`h-5 w-5 cursor-pointer select-none transition-all ${className} ${disabled && '!cursor-not-allowed !opacity-50'}`}
         >
             {Array.isArray(iconPaths) ? (
                 iconPaths.map((path) => (

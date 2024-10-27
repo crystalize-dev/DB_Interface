@@ -14,6 +14,10 @@ const config = {
                     bg: 'var(--bg-full)',
                     object: 'var(--bg-object)'
                 },
+                dark: {
+                    bg: 'var(--bg-dark)',
+                    object: 'var(--bg-dark-object)'
+                }
             }
         }
     },

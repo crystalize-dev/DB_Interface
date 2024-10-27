@@ -35,7 +35,8 @@ const Button = ({
                 return classNames(
                     'border-2 border-solid border-transparent bg-primary text-white transition-all',
                     {
-                        '!opacity-50 cursor-not-allowed': disabled
+                        '!opacity-50 cursor-not-allowed hover:bg-dark-bg':
+                            disabled
                     }
                 );
             case 'transparent':
