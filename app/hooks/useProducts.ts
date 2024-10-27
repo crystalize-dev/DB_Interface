@@ -22,7 +22,7 @@ export const useProducts = () => {
             successString: 'Товар добавлен!',
             actionOnSuccess: (data) => {
                 setProducts([...products, data as ProductType]);
-                router.push('/products');
+                router.push(`/${API}`);
             }
         });
     };
@@ -61,7 +61,7 @@ export const useProducts = () => {
                             : p
                     )
                 );
-                router.push('/products');
+                router.push(`/${API}`);
             }
         });
     };

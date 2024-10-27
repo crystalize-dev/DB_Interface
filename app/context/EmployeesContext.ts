@@ -16,6 +16,7 @@ type EmployeesContextType = {
         updatedEmployee: EmployeeType,
         setFetching: React.Dispatch<React.SetStateAction<boolean>>
     ) => void;
+    getPositions: () => string[];
 };
 
 export const EmployeesContext = createContext<EmployeesContextType>({
@@ -23,5 +24,6 @@ export const EmployeesContext = createContext<EmployeesContextType>({
     fetchingEmployees: false,
     addEmployee: () => {},
     removeEmployee: () => {},
-    updateEmployee: () => {}
+    updateEmployee: () => {},
+    getPositions: () => []
 });

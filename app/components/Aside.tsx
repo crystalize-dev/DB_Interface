@@ -10,7 +10,7 @@ const Aside = () => {
     const path = usePathname();
 
     return (
-        <div className="from-dark-bg to-dark-object scrollable flex h-full w-72 flex-col gap-4 bg-gradient-to-b p-8 text-white">
+        <div className="scrollable flex h-full w-72 flex-col gap-4 bg-gradient-to-b from-dark-bg to-dark-object p-8 text-white">
             <Link href={'/'} className="flex items-center gap-2">
                 <div className="relative size-12">
                     <Image
@@ -30,7 +30,7 @@ const Aside = () => {
                     <Link
                         href={`/${obj.link}`}
                         key={obj.link}
-                        className={`flex w-full items-center gap-2 rounded-md px-5 py-3 text-lg font-semibold capitalize outline outline-1 outline-transparent transition-all ${path === `/${obj.link}` ? 'bg-primary' : 'hover:outline-primary'}`}
+                        className={`flex w-full items-center gap-2 rounded-md px-5 py-3 text-lg font-semibold capitalize outline outline-1 outline-transparent transition-all ${path.includes(`/${obj.link}`) ? 'bg-primary' : 'hover:outline-primary'}`}
                     >
                         <Icon icon={obj.icon} />
                         <p>{obj.label}</p>

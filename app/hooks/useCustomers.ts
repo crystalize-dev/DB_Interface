@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react';
 import { CustomerType } from '../types/DataTypes';
 import { customAxios } from '@/axios/customAxios';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 export const useCustomers = () => {
     const [customers, setCustomers] = useState<CustomerType[]>([]);
     const [fetchingCustomers, setFetchingCustomers] = useState(false);
+
+    const router = useRouter();
 
     const API = 'customers';
 
@@ -19,6 +22,7 @@ export const useCustomers = () => {
             successString: 'Клиент добавлен!',
             actionOnSuccess: (data) => {
                 setCustomers([...customers, data as CustomerType]);
+                router.push(`/${API}`);
             }
         });
     };
@@ -55,6 +59,7 @@ export const useCustomers = () => {
                             : c
                     )
                 );
+                router.push(`/${API}`);
             }
         });
     };

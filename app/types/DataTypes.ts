@@ -1,27 +1,27 @@
 export type CustomerType = {
-    CustomerID: number;
+    CustomerID?: number;
     FirstName?: string;
     LastName?: string;
-    Phonenumber?: string;
+    PhoneNumber?: string;
     Email?: string;
     BirthDate?: Date;
     Address?: string;
-    Orders: OrderType[];
+    Orders?: OrderType[];
 };
 
 export type OrderType = {
-    OrderID: number;
+    OrderID?: number;
     CustomerID?: number;
     EmployeeID?: number;
     OrderDate?: Date;
     TotalAmount?: number;
-    OrderDetails: OrderDetailsType[];
+    OrderDetails?: OrderDetailsType[];
     Customers?: CustomerType;
     Employees?: EmployeeType;
 };
 
 export type OrderDetailsType = {
-    OrderDetailID: number;
+    OrderDetailID?: number;
     OrderID?: number;
     ProductID?: number;
     Quantity?: number;
@@ -31,13 +31,13 @@ export type OrderDetailsType = {
 };
 
 export type EmployeeType = {
-    EmployeeID: number;
+    EmployeeID?: number;
     FirstName?: string;
     LastName?: string;
     Position?: string;
     HireDate?: Date;
     Salary?: number;
-    Orders: OrderType;
+    Orders?: OrderType;
 };
 
 export type ProductType = {

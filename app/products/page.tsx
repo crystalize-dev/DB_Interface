@@ -42,7 +42,7 @@ const ProductsPage = () => {
             />
 
             <div className="flex items-center justify-between">
-                <h1 className="text-dark-bg text-4xl font-bold">Товары</h1>
+                <h1 className="text-4xl font-bold text-dark-bg">Товары</h1>
                 <Link href="/products/add">
                     <Button
                         type="button"
@@ -68,7 +68,7 @@ const ProductsPage = () => {
             </div>
 
             <div className="mt-8 flex h-fit w-full flex-col overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
-                <div className="from-dark-bg to-dark-object flex w-full items-center bg-gradient-to-br p-4 text-white">
+                <div className="flex w-full items-center bg-gradient-to-b from-dark-bg to-dark-object p-8 text-xl font-bold text-white">
                     <h3 className="w-1/3">Наименование</h3>
                     <h2 className="w-1/3">Категория</h2>
                     <p className="w-1/3">Цена</p>
@@ -112,7 +112,7 @@ const ProductsPage = () => {
                                 )
                         )
                     ) : (
-                        <div className="flex h-full w-full items-center justify-center">
+                        <div className="flex h-screen w-full items-center justify-center">
                             <p className="text-4xl text-zinc-500">
                                 Ничего нет!
                             </p>

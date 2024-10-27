@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react';
 import { EmployeeType } from '../types/DataTypes';
 import { customAxios } from '@/axios/customAxios';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 export const useEmployees = () => {
     const [employees, setEmployees] = useState<EmployeeType[]>([]);
     const [fetchingEmployees, setFetchingEmployees] = useState(false);
+
+    const router = useRouter();
 
     const API = 'employees';
 
@@ -19,6 +22,7 @@ export const useEmployees = () => {
             successString: 'Сотрудник добавлен!',
             actionOnSuccess: (data) => {
                 setEmployees([...employees, data as EmployeeType]);
+                router.push(`/${API}`);
             }
         });
     };
@@ -55,8 +59,19 @@ export const useEmployees = () => {
                             : e
                     )
                 );
+                router.push(`/${API}`);
             }
         });
+    };
+
+    const getPositions: () => string[] = () => {
+        if (!employees.length) return [];
+
+        const positions = employees
+            .map((employee) => employee.Position)
+            .filter((position): position is string => position !== undefined);
+
+        return Array.from(new Set(positions));
     };
 
     useEffect(() => {
@@ -77,6 +92,7 @@ export const useEmployees = () => {
         fetchingEmployees,
         addEmployee,
         removeEmployee,
-        updateEmployee
+        updateEmployee,
+        getPositions
     };
 };

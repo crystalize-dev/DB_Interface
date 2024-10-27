@@ -62,7 +62,7 @@ const AddProductPage = () => {
                     <Icon icon="arrowLeft" className="!size-5" />
                     Назад
                 </Button>
-                <h1 className="text-dark-bg text-4xl font-bold">
+                <h1 className="text-4xl font-bold text-dark-bg">
                     Добавление товара
                 </h1>
             </div>
@@ -70,9 +70,9 @@ const AddProductPage = () => {
             <div className="mt-8 flex h-fit w-fit flex-wrap gap-4">
                 <form
                     onSubmit={submit}
-                    className="flex w-fit flex-col gap-4 overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg"
+                    className="flex h-fit w-fit min-w-96 resize flex-col gap-4 overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg"
                 >
-                    <h1 className="from-dark-bg to-dark-object bg-gradient-to-br p-4 px-6 text-xl font-bold text-white">
+                    <h1 className="bg-gradient-to-br from-dark-bg to-dark-object p-4 px-6 text-xl font-bold text-white">
                         Новый товар:
                     </h1>
 
@@ -83,7 +83,7 @@ const AddProductPage = () => {
                             type="text"
                             required
                             placeholder="Наименование товара"
-                            className="!w-fit"
+                            className="!w-full"
                             inputClassName="bg-light-object"
                         />
 
@@ -93,7 +93,7 @@ const AddProductPage = () => {
                             name="productPrice"
                             required
                             placeholder="Цена"
-                            className="!w-fit"
+                            className="!w-full"
                             inputClassName="bg-light-object"
                         />
 
@@ -103,7 +103,7 @@ const AddProductPage = () => {
                             required
                             placeholder="Категория"
                             defaultValue={categoryInput}
-                            className="!w-fit"
+                            className="!w-full"
                             onType={handleCategoryType}
                             inputClassName="bg-light-object"
                         />
@@ -112,7 +112,7 @@ const AddProductPage = () => {
                             disabled={fetching}
                             type="submit"
                             variant="colored"
-                            className="mt-4 w-full"
+                            className="mt-auto w-full"
                             buttonClassName="bg-dark-object hover:bg-primary transition-all"
                         >
                             Добавить
@@ -120,12 +120,12 @@ const AddProductPage = () => {
                     </div>
                 </form>
 
-                <div className="flex w-fit flex-col gap-4 overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
-                    <h1 className="from-dark-bg to-dark-object bg-gradient-to-br p-4 px-8 text-xl font-bold text-white">
+                <div className="flex h-fit w-fit min-w-96 resize flex-col gap-4 overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
+                    <h1 className="bg-gradient-to-br from-dark-bg to-dark-object p-4 px-8 text-xl font-bold text-white">
                         Доступные категории:
                     </h1>
 
-                    <div className="scrollable flex w-full grow flex-col gap-4 px-4">
+                    <div className="scrollable flex w-full grow flex-col gap-4 p-4">
                         {categories.map((category) => (
                             <div
                                 key={category}

@@ -2,68 +2,73 @@
 import Icon from '@/app/components/Icon/Icon';
 import Button from '@/app/components/UI/Button';
 import Input from '@/app/components/UI/Input';
-import { ProductsContext } from '@/app/context/ProductsContext';
-import { ProductType } from '@/app/types/DataTypes';
+import { EmployeesContext } from '@/app/context/EmployeesContext';
+import { EmployeeType } from '@/app/types/DataTypes';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 
-const EditPage = () => {
+const EditEmployeePage = () => {
     const [fetching, setFetching] = useState(false);
 
     const router = useRouter();
     const { id } = useParams();
 
-    const { products, getCategories, updateProduct } =
-        useContext(ProductsContext);
+    const { employees, getPositions, updateEmployee } =
+        useContext(EmployeesContext);
 
-    const [product, setProduct] = React.useState<null | ProductType>(null);
+    const [employee, setEmployee] = React.useState<null | EmployeeType>(null);
 
-    const categories = getCategories();
-    const [selectedCategory, setSelectedCategory] = useState<string>();
-    const [categoryInput, setCategoryInput] = useState(product?.Category || '');
+    const positions = getPositions();
+    const [selectedPosition, setSelectedPosition] = useState<string>();
+    const [positionInput, setPositionInput] = useState(
+        employee?.Position || ''
+    );
 
-    const handleSelectCategory = (category: string) => {
-        setCategoryInput(category);
-        setSelectedCategory(category);
+    const handleSelectPosition = (position: string) => {
+        setPositionInput(position);
+        setSelectedPosition(position);
     };
 
-    const handleCategoryType = (value: string) => {
-        if (categories.includes(value)) {
-            setSelectedCategory(value);
+    const handlePositionType = (value: string) => {
+        if (positions.includes(value)) {
+            setSelectedPosition(value);
         } else {
-            setSelectedCategory(undefined);
+            setSelectedPosition(undefined);
         }
 
-        setCategoryInput(value);
+        setPositionInput(value);
     };
 
     const submit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const formData = new FormData(e.target as HTMLFormElement);
-        const name = formData.get('newProductName') as string;
-        const price = formData.get('newProductPrice') as string;
+        const fullName = formData.get('newEmployeeName') as string;
+        const salary = formData.get('newEmployeeSalary') as string;
 
-        const updatedProduct: ProductType = {
-            ...product,
-            ProductName: name,
-            Price: Number(price),
-            Category: categoryInput
+        const fullNameParts = fullName.split(' ');
+
+        const updatedEmployee: EmployeeType = {
+            ...employee,
+            FirstName: fullNameParts[0],
+            LastName: fullNameParts[1],
+            Salary: Number(salary),
+            Position: positionInput
         };
 
-        await updateProduct(updatedProduct, setFetching);
+        await updateEmployee(updatedEmployee, setFetching);
     };
 
     useEffect(() => {
-        setProduct(products.find((p) => p.ProductID === Number(id)) || null);
-    }, [id, products]);
+        setEmployee(employees.find((e) => e.EmployeeID === Number(id)) || null);
+    }, [id, employees]);
 
     useEffect(() => {
-        if (!product) return;
+        if (!employee) return;
 
-        setCategoryInput(product.Category as string);
-        setSelectedCategory(product.Category);
-    }, [product]);
+        setPositionInput(employee.Position as string);
+        setSelectedPosition(employee.Position);
+    }, [employee]);
 
     return (
         <div className="flex h-full w-full flex-col gap-4">
@@ -79,7 +84,7 @@ const EditPage = () => {
                     Назад
                 </Button>
                 <h1 className="text-4xl font-bold text-dark-bg">
-                    {product?.ProductName}
+                    {employee?.FirstName + ' ' + employee?.LastName}
                 </h1>
             </div>
 
@@ -94,35 +99,54 @@ const EditPage = () => {
 
                     <div className="flex w-full grow flex-col gap-4 p-8">
                         <Input
-                            name="newProductName"
-                            type="text"
                             disabled={fetching}
+                            name="newEmployeeName"
+                            type="text"
                             required
-                            defaultValue={product?.ProductName}
-                            placeholder="Наименование товара"
+                            defaultValue={
+                                employee?.FirstName + ' ' + employee?.LastName
+                            }
+                            placeholder="ФИО (через пробел)"
                             className="!w-full"
                             inputClassName="bg-light-object"
                         />
 
                         <Input
+                            disabled={fetching}
+                            type="text"
+                            required
+                            placeholder="Должность"
+                            defaultValue={positionInput}
+                            className="!w-full"
+                            onType={handlePositionType}
+                            inputClassName="bg-light-object"
+                        />
+
+                        <Input
+                            disabled={fetching}
                             type="number"
-                            name="newProductPrice"
-                            disabled={fetching}
-                            defaultValue={product?.Price}
+                            name="newEmployeeSalary"
                             required
-                            placeholder="Цена"
+                            defaultValue={employee?.Salary}
+                            placeholder="Зарплата"
                             className="!w-full"
                             inputClassName="bg-light-object"
                         />
 
                         <Input
-                            type="text"
+                            disabled={true}
+                            type="date"
+                            name="hireDate"
                             required
-                            disabled={fetching}
-                            placeholder="Категория"
-                            defaultValue={categoryInput}
+                            defaultValue={
+                                employee?.HireDate
+                                    ? new Date(employee.HireDate)
+                                          .toISOString()
+                                          .split('T')[0]
+                                    : undefined
+                            }
+                            placeholder="Дата найма"
                             className="!w-full"
-                            onType={handleCategoryType}
                             inputClassName="bg-light-object"
                         />
 
@@ -144,21 +168,21 @@ const EditPage = () => {
                     </h1>
 
                     <div className="scrollable flex w-full grow flex-col gap-4 px-4">
-                        {categories.map((category) => (
+                        {positions.map((position) => (
                             <div
-                                key={category}
-                                className={`flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 transition-all hover:bg-primary hover:!text-white ${selectedCategory === category && 'bg-primary !text-white'} ${fetching && 'cursor-not-allowed opacity-50'}`}
+                                key={position}
+                                className={`flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 transition-all hover:bg-primary hover:!text-white ${selectedPosition === position && 'bg-primary !text-white'} ${fetching && 'cursor-not-allowed opacity-50'}`}
                                 onClick={
                                     fetching
                                         ? undefined
-                                        : () => handleSelectCategory(category)
+                                        : () => handleSelectPosition(position)
                                 }
                             >
-                                {selectedCategory === category && (
+                                {selectedPosition === position && (
                                     <Icon icon="ok" />
                                 )}
 
-                                {category}
+                                {position}
                             </div>
                         ))}
                     </div>
@@ -168,4 +192,4 @@ const EditPage = () => {
     );
 };
 
-export default EditPage;
+export default EditEmployeePage;

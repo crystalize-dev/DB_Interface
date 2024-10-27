@@ -5,9 +5,10 @@ import Link from 'next/link';
 import classNames from 'classnames';
 import { IconType } from '../Icon/icon-database';
 import Icon from '../Icon/Icon';
+import { PatternFormat } from 'react-number-format';
 
 interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
-    type: 'email' | 'password' | 'text' | 'number';
+    type: 'email' | 'password' | 'text' | 'number' | 'date' | 'phone';
     disabled?: boolean;
     placeholder?: string;
     placeholderType?: 'inner' | 'classic';
@@ -121,21 +122,47 @@ const Input = ({
                 </p>
             )}
 
-            <input
-                {...otherProps}
-                type={inputType}
-                required={required}
-                onBlur={handleBlur}
-                autoComplete="off"
-                disabled={disabled}
-                placeholder={
-                    placeholderType === 'classic' ? placeholder : undefined
-                }
-                hidden={hidden}
-                value={value}
-                onChange={changeValue}
-                className={inputClassNames}
-            />
+            {type !== 'phone' ? (
+                <input
+                    {...otherProps}
+                    type={inputType}
+                    required={required}
+                    onBlur={handleBlur}
+                    autoComplete="off"
+                    disabled={disabled}
+                    placeholder={
+                        placeholderType === 'classic' ? placeholder : undefined
+                    }
+                    hidden={hidden}
+                    value={value}
+                    onChange={changeValue}
+                    className={inputClassNames}
+                />
+            ) : (
+                <PatternFormat
+                    {...otherProps}
+                    required={required}
+                    onBlur={handleBlur}
+                    disabled={disabled}
+                    placeholder={
+                        placeholderType === 'classic' ? placeholder : undefined
+                    }
+                    value={
+                        typeof value === 'string' ||
+                        typeof value === 'number' ||
+                        value == null
+                            ? value
+                            : String(value)
+                    }
+                    onChange={changeValue}
+                    className={inputClassNames}
+                    hidden={hidden}
+                    autoComplete="off"
+                    format="+7(###)###-##-##"
+                    allowEmptyFormatting
+                    mask="_"
+                />
+            )}
 
             {!hidden && (required || forgotPassword) && (
                 <div className="-mt-1 flex w-full items-center justify-between gap-2 text-xs">

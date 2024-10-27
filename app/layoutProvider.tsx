@@ -47,7 +47,8 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
         addEmployee,
         fetchingEmployees,
         removeEmployee,
-        updateEmployee
+        updateEmployee,
+        getPositions
     } = useEmployees();
 
     const {
@@ -77,7 +78,8 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
                         addEmployee,
                         fetchingEmployees,
                         removeEmployee,
-                        updateEmployee
+                        updateEmployee,
+                        getPositions
                     }}
                 >
                     <ProductsContext.Provider

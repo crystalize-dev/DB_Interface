@@ -41,7 +41,7 @@ const ConfirmWindow = ({
                                 onClick={handleAccept}
                                 type="button"
                                 variant="colored"
-                                buttonClassName="!bg-green-500"
+                                buttonClassName="bg-green-500 hover:bg-transparent hover:border-green-500 hover:text-green-500"
                             >
                                 Подтвердить
                             </Button>
@@ -49,7 +49,7 @@ const ConfirmWindow = ({
                                 onClick={handleCancel}
                                 type="button"
                                 variant="colored"
-                                buttonClassName="bg-red-500 "
+                                buttonClassName="bg-red-500 hover:bg-transparent hover:border-red-500 hover:text-red-500"
                             >
                                 Отменить
                             </Button>
