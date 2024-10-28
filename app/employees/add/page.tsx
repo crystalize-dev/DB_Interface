@@ -140,7 +140,7 @@ const AddEmployeePage = () => {
                         Существующие должности:
                     </h1>
 
-                    <div className="scrollable flex w-full grow flex-col gap-4 px-4">
+                    <div className="scrollable flex w-full grow flex-col gap-4 p-4">
                         {positions.map((position) => (
                             <div
                                 key={position}

@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import { OrderType } from '../types/DataTypes';
+import { OrderDetailsType } from '../types/DataTypes';
 import { customAxios } from '@/axios/customAxios';
 import toast from 'react-hot-toast';
 
 export const useOrders = () => {
-    const [orders, setOrders] = useState<OrderType[]>([]);
+    const [orders, setOrders] = useState<OrderDetailsType[]>([]);
     const [fetchingOrders, setFetchingOrders] = useState(false);
 
     const API = 'orders';
 
     const addOrder = async (
-        order: OrderType,
+        order: OrderDetailsType,
         setFetching: React.Dispatch<React.SetStateAction<boolean>>
     ) => {
         await customAxios('POST', API, setFetching, {
@@ -18,9 +18,13 @@ export const useOrders = () => {
             loadingString: 'Добавляем продажу...',
             successString: 'Продажа добавлена!',
             actionOnSuccess: (data) => {
-                setOrders([...orders, data as OrderType]);
+                setOrders([...orders, data as OrderDetailsType]);
             }
         });
+    };
+
+    const getSumm = () => {
+        return orders.reduce((sum, order) => sum + Number(order.Price), 0);
     };
 
     useEffect(() => {
@@ -28,7 +32,7 @@ export const useOrders = () => {
 
         customAxios('GET', API, setFetchingOrders, {
             actionOnSuccess: (data) => {
-                setOrders(data as OrderType[]);
+                setOrders(data as OrderDetailsType[]);
             },
             actionOnFailure: () => {
                 toast.error('Ошибка подключения к БД!');
@@ -36,5 +40,5 @@ export const useOrders = () => {
         }).then(() => setFetchingOrders(false));
     }, []);
 
-    return { orders, fetchingOrders, addOrder };
+    return { orders, fetchingOrders, addOrder, getSumm };
 };

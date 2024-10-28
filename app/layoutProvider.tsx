@@ -40,7 +40,7 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
         updateProduct
     } = useProducts();
 
-    const { orders, addOrder, fetchingOrders } = useOrders();
+    const { orders, addOrder, fetchingOrders, getSumm } = useOrders();
 
     const {
         employees,
@@ -70,7 +70,7 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
             }}
         >
             <OrdersContext.Provider
-                value={{ orders, addOrder, fetchingOrders }}
+                value={{ orders, addOrder, fetchingOrders, getSumm }}
             >
                 <EmployeesContext.Provider
                     value={{

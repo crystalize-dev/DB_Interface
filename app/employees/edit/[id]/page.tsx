@@ -167,11 +167,11 @@ const EditEmployeePage = () => {
                         Доступные категории:
                     </h1>
 
-                    <div className="scrollable flex w-full grow flex-col gap-4 px-4">
+                    <div className="scrollable flex w-full grow flex-col gap-4 p-4">
                         {positions.map((position) => (
                             <div
                                 key={position}
-                                className={`flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 transition-all hover:bg-primary hover:!text-white ${selectedPosition === position && 'bg-primary !text-white'} ${fetching && 'cursor-not-allowed opacity-50'}`}
+                                className={`flex cursor-pointer items-center gap-2 rounded-md p-4 py-2 transition-all hover:bg-primary hover:!text-white ${selectedPosition === position && 'bg-primary !text-white'} ${fetching && 'cursor-not-allowed opacity-50'}`}
                                 onClick={
                                     fetching
                                         ? undefined

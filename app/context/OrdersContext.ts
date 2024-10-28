@@ -1,17 +1,19 @@
 import { createContext } from 'react';
-import { OrderType } from '../types/DataTypes';
+import { OrderDetailsType } from '../types/DataTypes';
 
 type OrdersContextType = {
-    orders: OrderType[];
+    orders: OrderDetailsType[];
     fetchingOrders: boolean;
     addOrder: (
-        order: OrderType,
+        order: OrderDetailsType,
         setFetching: React.Dispatch<React.SetStateAction<boolean>>
     ) => void;
+    getSumm: () => void;
 };
 
 export const OrdersContext = createContext<OrdersContextType>({
     orders: [],
     fetchingOrders: false,
-    addOrder: () => {}
+    addOrder: () => {},
+    getSumm: () => {}
 });
