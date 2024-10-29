@@ -69,7 +69,7 @@ const EmployessPage = () => {
                         {employees.reduce(
                             (acc, cur) => (acc += Number(cur.Salary)),
                             0
-                        )}
+                        )}{' '}
                         руб.
                     </p>
                 </div>

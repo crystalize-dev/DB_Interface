@@ -1,4 +1,3 @@
 # Todo:
 
--   Orders page
--   Build
+-   Orders (Переделать)

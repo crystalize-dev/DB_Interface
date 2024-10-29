@@ -91,15 +91,19 @@ const CustomersPage = () => {
                                             {customer.Email}
                                         </p>
                                         <p className="w-1/5">
-                                            {String(customer.PhoneNumber)}
+                                            {customer.PhoneNumber
+                                                ? String(customer.PhoneNumber)
+                                                : undefined}
                                         </p>
                                         <p className="w-1/5">
                                             {customer.Address}
                                         </p>
                                         <p className="w-1/5">
-                                            {new Date(
-                                                customer.BirthDate as Date
-                                            ).toLocaleDateString('ru-RU')}
+                                            {customer.BirthDate
+                                                ? new Date(
+                                                      customer.BirthDate as Date
+                                                  ).toLocaleDateString('ru-RU')
+                                                : undefined}
                                         </p>
                                         <Icon
                                             className="absolute right-4 !size-10 rounded-md p-2 text-red-500"

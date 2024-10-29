@@ -6,6 +6,7 @@ import { ProductsContext } from '@/app/context/ProductsContext';
 import { ProductType } from '@/app/types/DataTypes';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const EditPage = () => {
     const [fetching, setFetching] = useState(false);
@@ -43,15 +44,22 @@ const EditPage = () => {
         const formData = new FormData(e.target as HTMLFormElement);
         const name = formData.get('newProductName') as string;
         const price = formData.get('newProductPrice') as string;
+        const stockQuantity = formData.get('newProductStockQuantity') as string;
+
+        if (Number(stockQuantity) < 0) {
+            toast.error('Недопустимое значение количества на складе');
+            return;
+        }
 
         const updatedProduct: ProductType = {
             ...product,
             ProductName: name,
+            StockQuantity: Number(stockQuantity),
             Price: Number(price),
             Category: categoryInput
         };
 
-        await updateProduct(updatedProduct, setFetching);
+        await updateProduct(updatedProduct, setFetching, true);
     };
 
     useEffect(() => {
@@ -86,7 +94,7 @@ const EditPage = () => {
             <div className="mt-8 flex h-fit w-fit flex-wrap gap-4">
                 <form
                     onSubmit={submit}
-                    className="flex h-fit w-fit min-w-96 resize flex-col gap-4 overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg"
+                    className="scrollable flex h-fit w-fit min-w-96 resize flex-col gap-4 overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg"
                 >
                     <h1 className="bg-gradient-to-br from-dark-bg to-dark-object p-4 px-6 text-xl font-bold text-white">
                         Изменить товар:
@@ -111,6 +119,17 @@ const EditPage = () => {
                             defaultValue={product?.Price}
                             required
                             placeholder="Цена"
+                            className="!w-full"
+                            inputClassName="bg-light-object"
+                        />
+
+                        <Input
+                            type="number"
+                            name="newProductQuantity"
+                            disabled={fetching}
+                            defaultValue={product?.StockQuantity}
+                            required
+                            placeholder="Кол-во"
                             className="!w-full"
                             inputClassName="bg-light-object"
                         />

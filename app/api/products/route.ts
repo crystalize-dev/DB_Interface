@@ -60,7 +60,8 @@ export async function PUT(req: NextRequest) {
                 data: {
                     ProductName: newProduct.ProductName,
                     Category: newProduct.Category,
-                    Price: newProduct.Price
+                    Price: newProduct.Price,
+                    StockQuantity: newProduct.StockQuantity
                 },
                 where: { ProductID: newProduct.ProductID }
             }),

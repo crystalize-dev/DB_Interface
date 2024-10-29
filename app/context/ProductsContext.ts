@@ -14,7 +14,8 @@ type ProductsContextType = {
     ) => void;
     updateProduct: (
         product: ProductType,
-        setFetching: React.Dispatch<React.SetStateAction<boolean>>
+        setFetching: React.Dispatch<React.SetStateAction<boolean>>,
+        redirect?: boolean
     ) => void;
     getCategories: () => string[];
 };

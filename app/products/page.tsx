@@ -7,8 +7,7 @@ import ConfirmWindow from '../components/ConfirmWindow';
 import { ProductsContext } from '../context/ProductsContext';
 
 const ProductsPage = () => {
-    const { products, removeProduct, getCategories } =
-        useContext(ProductsContext);
+    const { products, removeProduct } = useContext(ProductsContext);
 
     const [fetching, setFetching] = useState(false);
     const [confirmWindowsVisible, setConfirmWindowsVisible] = useState(false);
@@ -58,20 +57,30 @@ const ProductsPage = () => {
 
             <div className="flex w-full flex-wrap gap-4">
                 <div className="flex flex-col gap-2 rounded-md border border-solid border-black/20 bg-light-bg p-4">
-                    <h1 className="text-xl text-zinc-500">Всего товаров</h1>
+                    <h1 className="text-xl text-zinc-500">
+                        Всего позиций на складе
+                    </h1>
                     <p className="text-2xl">{products.length}</p>
                 </div>
                 <div className="flex flex-col gap-2 rounded-md border border-solid border-black/20 bg-light-bg p-4">
-                    <h1 className="text-xl text-zinc-500">Всего категорий</h1>
-                    <p className="text-2xl">{getCategories().length}</p>
+                    <h1 className="text-xl text-zinc-500">
+                        Всего единиц на складе
+                    </h1>
+                    <p className="text-2xl">
+                        {products.reduce(
+                            (acc, curr) => acc + Number(curr.StockQuantity),
+                            0
+                        )}
+                    </p>
                 </div>
             </div>
 
             <div className="mt-8 flex h-fit w-full flex-col overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
                 <div className="flex w-full items-center bg-gradient-to-b from-dark-bg to-dark-object p-8 text-xl font-bold text-white">
-                    <h3 className="w-1/3">Наименование</h3>
-                    <h2 className="w-1/3">Категория</h2>
-                    <p className="w-1/3">Цена</p>
+                    <h3 className="w-1/4">Наименование</h3>
+                    <h2 className="w-1/4">Категория</h2>
+                    <h2 className="w-1/4">Кол-во</h2>
+                    <p className="w-1/4">Цена</p>
                 </div>
 
                 <div className="scrollable flex w-full grow flex-col">
@@ -84,13 +93,18 @@ const ProductsPage = () => {
                                         key={String(product.ProductID)}
                                         className="relative flex w-full items-center border-b border-solid border-black/10 p-8 transition-all last:border-none hover:bg-white hover:shadow-sm"
                                     >
-                                        <h2 className="w-1/3">
+                                        <p className="w-1/4">
                                             {product.ProductName}
-                                        </h2>
-                                        <h3 className="w-1/3">
+                                        </p>
+                                        <p className="w-1/4">
                                             {product.Category}
-                                        </h3>
-                                        <p className="w-1/3">
+                                        </p>
+                                        <p className="w-1/4">
+                                            {product.StockQuantity
+                                                ? product.StockQuantity
+                                                : '0'}
+                                        </p>
+                                        <p className="w-1/4">
                                             {String(product.Price)} руб.
                                         </p>
 

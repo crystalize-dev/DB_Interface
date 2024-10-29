@@ -14,7 +14,8 @@ export const useCustomers = () => {
 
     const addCustomer = async (
         customer: CustomerType,
-        setFetching: React.Dispatch<React.SetStateAction<boolean>>
+        setFetching: React.Dispatch<React.SetStateAction<boolean>>,
+        redirect: boolean
     ) => {
         await customAxios('POST', API, setFetching, {
             data: customer,
@@ -22,7 +23,7 @@ export const useCustomers = () => {
             successString: 'Клиент добавлен!',
             actionOnSuccess: (data) => {
                 setCustomers([...customers, data as CustomerType]);
-                router.push(`/${API}`);
+                if (redirect) router.push(`/${API}`);
             }
         });
     };

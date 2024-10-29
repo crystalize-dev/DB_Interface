@@ -47,7 +47,8 @@ export const useProducts = () => {
 
     const updateProduct = async (
         updatedProduct: ProductType,
-        setFetching: React.Dispatch<React.SetStateAction<boolean>>
+        setFetching: React.Dispatch<React.SetStateAction<boolean>>,
+        redirect?: boolean
     ) => {
         await customAxios('PUT', API, setFetching, {
             data: updatedProduct,
@@ -61,7 +62,8 @@ export const useProducts = () => {
                             : p
                     )
                 );
-                router.push(`/${API}`);
+
+                if (redirect) router.push(`/${API}`);
             }
         });
     };

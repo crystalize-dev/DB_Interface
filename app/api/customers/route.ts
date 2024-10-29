@@ -32,16 +32,9 @@ export async function POST(req: NextRequest) {
     const { FirstName, LastName, PhoneNumber, Email, BirthDate, Address } =
         await req.json();
 
-    if (
-        !FirstName ||
-        !LastName ||
-        !PhoneNumber ||
-        !Email ||
-        !BirthDate ||
-        !Address
-    ) {
+    if (!FirstName || !LastName) {
         return NextResponse.json(
-            { error: 'Missing required fields' },
+            { error: 'Missing required fields: ФИО' },
             { status: 400 }
         );
     }
@@ -51,7 +44,8 @@ export async function POST(req: NextRequest) {
             data: {
                 FirstName,
                 LastName,
-                PhoneNumber,
+                PhoneNumber:
+                    PhoneNumber === '+7(___)___-__-__' ? null : PhoneNumber,
                 Email,
                 BirthDate,
                 Address

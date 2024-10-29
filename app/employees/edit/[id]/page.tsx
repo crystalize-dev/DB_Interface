@@ -91,7 +91,7 @@ const EditEmployeePage = () => {
             <div className="mt-8 flex h-fit w-fit flex-wrap gap-4">
                 <form
                     onSubmit={submit}
-                    className="flex h-fit w-fit min-w-96 resize flex-col gap-4 overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg"
+                    className="scrollable flex h-fit w-fit min-w-96 resize flex-col gap-4 overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg"
                 >
                     <h1 className="bg-gradient-to-br from-dark-bg to-dark-object p-4 px-6 text-xl font-bold text-white">
                         Изменить товар:

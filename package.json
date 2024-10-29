@@ -24,7 +24,8 @@
         "react-dom": "^18",
         "react-hot-toast": "^2.4.1",
         "react-loader-spinner": "^6.1.6",
-        "react-number-format": "^5.4.2"
+        "react-number-format": "^5.4.2",
+        "sharp": "^0.33.5"
     },
     "devDependencies": {
         "@types/node": "^20",

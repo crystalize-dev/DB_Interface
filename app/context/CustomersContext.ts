@@ -6,7 +6,8 @@ type CustomersContextType = {
     fetchingCustomers: boolean;
     addCustomer: (
         customer: CustomerType,
-        setFetching: React.Dispatch<React.SetStateAction<boolean>>
+        setFetching: React.Dispatch<React.SetStateAction<boolean>>,
+        redirect: boolean
     ) => void;
     removeCustomer: (
         customerID: number,

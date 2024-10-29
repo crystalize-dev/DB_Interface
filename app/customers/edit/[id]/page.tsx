@@ -72,7 +72,7 @@ const EditCustomerPage = () => {
                     Изменить товар:
                 </h1>
 
-                <div className="flex w-full grow flex-col gap-4 p-8">
+                <div className="scrollable flex w-full grow flex-col gap-4 p-8">
                     <Input
                         disabled={fetching}
                         name="newCustomerName"

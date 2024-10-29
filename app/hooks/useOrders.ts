@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
-import { OrderDetailsType } from '../types/DataTypes';
+import { OrderType } from '../types/DataTypes';
 import { customAxios } from '@/axios/customAxios';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 export const useOrders = () => {
-    const [orders, setOrders] = useState<OrderDetailsType[]>([]);
+    const [orders, setOrders] = useState<OrderType[]>([]);
     const [fetchingOrders, setFetchingOrders] = useState(false);
+
+    const router = useRouter();
 
     const API = 'orders';
 
     const addOrder = async (
-        order: OrderDetailsType,
+        order: OrderType,
         setFetching: React.Dispatch<React.SetStateAction<boolean>>
     ) => {
         await customAxios('POST', API, setFetching, {
@@ -18,13 +21,17 @@ export const useOrders = () => {
             loadingString: 'Добавляем продажу...',
             successString: 'Продажа добавлена!',
             actionOnSuccess: (data) => {
-                setOrders([...orders, data as OrderDetailsType]);
+                setOrders([...orders, data as OrderType]);
+                router.push(`/${API}`);
             }
         });
     };
 
     const getSumm = () => {
-        return orders.reduce((sum, order) => sum + Number(order.Price), 0);
+        return orders.reduce(
+            (sum, order) => sum + Number(order.TotalAmount),
+            0
+        );
     };
 
     useEffect(() => {
@@ -32,7 +39,7 @@ export const useOrders = () => {
 
         customAxios('GET', API, setFetchingOrders, {
             actionOnSuccess: (data) => {
-                setOrders(data as OrderDetailsType[]);
+                setOrders(data as OrderType[]);
             },
             actionOnFailure: () => {
                 toast.error('Ошибка подключения к БД!');
