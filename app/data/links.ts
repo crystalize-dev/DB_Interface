@@ -31,5 +31,11 @@ export const DBLinks: LinkType[] = [
         link: 'customers',
         label: 'Клиенты',
         description: 'Список всех клиентов компании'
+    },
+    {
+        icon: 'tag',
+        link: 'procedures',
+        label: 'Процедуры',
+        description: 'Вызов хранимых процедур БД'
     }
 ];

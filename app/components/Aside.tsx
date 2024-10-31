@@ -4,7 +4,7 @@ import React from 'react';
 import Icon from './Icon/Icon';
 import logo from '../img/logo.png';
 import Image from 'next/image';
-import { DBLinks } from '../links/links';
+import { DBLinks } from '../data/links';
 
 const Aside = () => {
     const path = usePathname();
