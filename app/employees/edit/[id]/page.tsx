@@ -6,6 +6,7 @@ import { EmployeesContext } from '@/app/context/EmployeesContext';
 import { EmployeeType } from '@/app/types/DataTypes';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const EditEmployeePage = () => {
     const [fetching, setFetching] = useState(false);
@@ -47,6 +48,11 @@ const EditEmployeePage = () => {
         const salary = formData.get('newEmployeeSalary') as string;
 
         const fullNameParts = fullName.split(' ');
+
+        if (Number(salary) < 0) {
+            toast.error('Зарплата не может быть отрицательной!');
+            return;
+        }
 
         const updatedEmployee: EmployeeType = {
             ...employee,
