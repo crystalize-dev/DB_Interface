@@ -1,10 +1,11 @@
 'use client';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { CustomersContext } from '../context/CustomersContext';
 import ConfirmWindow from '../components/ConfirmWindow';
 import Link from 'next/link';
 import Button from '../components/UI/Button';
 import Icon from '../components/Icon/Icon';
+import Input from '../components/UI/Input';
 
 const CustomersPage = () => {
     const [fetching, setFetching] = useState(false);
@@ -15,6 +16,22 @@ const CustomersPage = () => {
     const [customerIDToDelete, setCustomerToDelete] = useState<null | number>(
         null
     );
+
+    const [customersToView, setCustomersToView] = useState(customers);
+    const [searchInput, setSearchInput] = useState('');
+
+    useEffect(() => {
+        if (!searchInput) setCustomersToView(customers);
+        else {
+            setCustomersToView(
+                customers.filter((customer) =>
+                    (customer.FirstName + ' ' + customer.LastName)
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase())
+                )
+            );
+        }
+    }, [searchInput, customers]);
 
     const handleConfirmWindow = (
         e: React.MouseEvent<SVGSVGElement, MouseEvent>,
@@ -63,7 +80,16 @@ const CustomersPage = () => {
                 </div>
             </div>
 
-            <div className="mt-8 flex h-fit w-full flex-col overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
+            <Input
+                type="text"
+                onType={setSearchInput}
+                defaultValue={searchInput}
+                placeholder="Найти клинета по ФИО"
+                placeholderType="classic"
+                inputClassName="bg-white"
+            />
+
+            <div className="flex h-fit w-full flex-col overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
                 <div className="flex w-full items-center bg-gradient-to-b from-dark-bg to-dark-object p-8 text-xl font-bold text-white">
                     <p className="w-1/5">ФИО</p>
                     <p className="w-1/5">E-mail</p>
@@ -73,8 +99,8 @@ const CustomersPage = () => {
                 </div>
 
                 <div className="scrollable flex w-full grow flex-col">
-                    {customers.length > 0 ? (
-                        customers.map(
+                    {customersToView.length > 0 ? (
+                        customersToView.map(
                             (customer) =>
                                 customer && (
                                     <Link

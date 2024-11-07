@@ -1,12 +1,33 @@
 'use client';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { OrdersContext } from '../context/OrdersContext';
 import Link from 'next/link';
 import Button from '../components/UI/Button';
 import Icon from '../components/Icon/Icon';
+import Input from '../components/UI/Input';
 
 const OrdersPage = () => {
     const { orders, getSumm } = useContext(OrdersContext);
+
+    const [ordersToview, setOrderToView] = useState(orders);
+    const [searchInput, setSearchInput] = useState('');
+
+    useEffect(() => {
+        if (!searchInput) setOrderToView(orders);
+        else {
+            setOrderToView(
+                orders.filter((order) =>
+                    (
+                        order.Customers?.FirstName +
+                        ' ' +
+                        order.Customers?.LastName
+                    )
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase())
+                )
+            );
+        }
+    }, [searchInput, orders]);
 
     return (
         <div className="flex h-full w-full flex-col gap-4">
@@ -35,7 +56,16 @@ const OrdersPage = () => {
                 </div>
             </div>
 
-            <div className="mt-8 flex h-fit w-full flex-col overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
+            <Input
+                type="text"
+                onType={setSearchInput}
+                defaultValue={searchInput}
+                placeholder="Найти заказ по клиенту"
+                placeholderType="classic"
+                inputClassName="bg-white"
+            />
+
+            <div className="flex h-fit w-full flex-col overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
                 <div className="flex w-full items-center bg-gradient-to-b from-dark-bg to-dark-object p-8 text-xl font-bold text-white">
                     <h3 className="w-1/4">ID</h3>
                     <h2 className="w-1/4">Клиент</h2>
@@ -44,8 +74,8 @@ const OrdersPage = () => {
                 </div>
 
                 <div className="scrollable flex w-full grow flex-col">
-                    {orders.length > 0 ? (
-                        orders.map(
+                    {ordersToview.length > 0 ? (
+                        ordersToview.map(
                             (order) =>
                                 order && (
                                     <Link

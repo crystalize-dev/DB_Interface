@@ -1,10 +1,11 @@
 'use client';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Button from '../components/UI/Button';
 import Icon from '../components/Icon/Icon';
 import Link from 'next/link';
 import ConfirmWindow from '../components/ConfirmWindow';
 import { ProductsContext } from '../context/ProductsContext';
+import Input from '../components/UI/Input';
 
 const ProductsPage = () => {
     const { products, removeProduct } = useContext(ProductsContext);
@@ -14,6 +15,22 @@ const ProductsPage = () => {
     const [productIDToDelete, setProductToDelete] = useState<null | number>(
         null
     );
+
+    const [productsToView, setProductsToView] = useState(products);
+    const [searchInput, setSearchInput] = useState('');
+
+    useEffect(() => {
+        if (!searchInput) setProductsToView(products);
+        else {
+            setProductsToView(
+                products.filter((product) =>
+                    (product.ProductName as string)
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase())
+                )
+            );
+        }
+    }, [searchInput, products]);
 
     const handleConfirmWindow = (
         e: React.MouseEvent<SVGSVGElement, MouseEvent>,
@@ -75,7 +92,16 @@ const ProductsPage = () => {
                 </div>
             </div>
 
-            <div className="mt-8 flex h-fit w-full flex-col overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
+            <Input
+                type="text"
+                onType={setSearchInput}
+                defaultValue={searchInput}
+                placeholder="Найти товар по наименованию"
+                placeholderType="classic"
+                inputClassName="bg-white"
+            />
+
+            <div className="flex h-fit w-full flex-col overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
                 <div className="flex w-full items-center bg-gradient-to-b from-dark-bg to-dark-object p-8 text-xl font-bold text-white">
                     <h3 className="w-1/4">Наименование</h3>
                     <h2 className="w-1/4">Категория</h2>
@@ -84,8 +110,8 @@ const ProductsPage = () => {
                 </div>
 
                 <div className="scrollable flex w-full grow flex-col">
-                    {products.length > 0 ? (
-                        products.map(
+                    {productsToView.length > 0 ? (
+                        productsToView.map(
                             (product) =>
                                 product && (
                                     <Link

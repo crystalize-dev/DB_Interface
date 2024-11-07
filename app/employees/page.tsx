@@ -1,10 +1,11 @@
 'use client';
 import Link from 'next/link';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Button from '../components/UI/Button';
 import Icon from '../components/Icon/Icon';
 import { EmployeesContext } from '../context/EmployeesContext';
 import ConfirmWindow from '../components/ConfirmWindow';
+import Input from '../components/UI/Input';
 
 const EmployessPage = () => {
     const [fetching, setFetching] = useState(false);
@@ -15,6 +16,22 @@ const EmployessPage = () => {
     const [employeeIDToDelete, setEmployeeToDelete] = useState<null | number>(
         null
     );
+
+    const [employeesToView, setEmployeesToView] = useState(employees);
+    const [searchInput, setSearchInput] = useState('');
+
+    useEffect(() => {
+        if (!searchInput) setEmployeesToView(employees);
+        else {
+            setEmployeesToView(
+                employees.filter((employee) =>
+                    (employee.FirstName + ' ' + employee.LastName)
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase())
+                )
+            );
+        }
+    }, [searchInput, employees]);
 
     const handleConfirmWindow = (
         e: React.MouseEvent<SVGSVGElement, MouseEvent>,
@@ -75,7 +92,16 @@ const EmployessPage = () => {
                 </div>
             </div>
 
-            <div className="mt-8 flex h-fit w-full flex-col overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
+            <Input
+                type="text"
+                onType={setSearchInput}
+                defaultValue={searchInput}
+                placeholder="Найти сотрудника по ФИО"
+                placeholderType="classic"
+                inputClassName="bg-white"
+            />
+
+            <div className="flex h-fit w-full flex-col overflow-hidden rounded-lg border border-solid border-black/20 bg-light-bg">
                 <div className="flex w-full items-center bg-gradient-to-b from-dark-bg to-dark-object p-8 text-xl font-bold text-white">
                     <p className="w-1/4">ФИО</p>
                     <p className="w-1/4">Должность</p>
@@ -84,8 +110,8 @@ const EmployessPage = () => {
                 </div>
 
                 <div className="scrollable flex w-full grow flex-col">
-                    {employees.length > 0 ? (
-                        employees.map(
+                    {employeesToView.length > 0 ? (
+                        employeesToView.map(
                             (employee) =>
                                 employee && (
                                     <Link
