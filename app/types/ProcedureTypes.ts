@@ -6,13 +6,16 @@ export type ProcedureType = {
 export type procedureNameType =
     | 'productivity'
     | 'sales-by-customer'
-    | 'sales-by-month';
+    | 'sales-by-month'
+    | 'encrypt-data'
+    | 'decrypt-data'
+    | 'decrypt-one-customer';
 
 export type ProductivityType = {
     EmployeeID: string;
     FirstName: string;
     LastName: string;
-    TotalOrders: String;
+    TotalOrders: string;
     TotalSales: string;
 };
 

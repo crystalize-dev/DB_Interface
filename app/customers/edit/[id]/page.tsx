@@ -17,6 +17,8 @@ const EditCustomerPage = () => {
 
     const [customer, setCustomer] = React.useState<null | CustomerType>(null);
 
+    console.log(customer)
+
     const submit = async (e: React.FormEvent) => {
         e.preventDefault();
 

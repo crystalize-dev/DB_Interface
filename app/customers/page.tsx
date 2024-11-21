@@ -17,6 +17,8 @@ const CustomersPage = () => {
         null
     );
 
+    console.log(customers);
+
     const [customersToView, setCustomersToView] = useState(customers);
     const [searchInput, setSearchInput] = useState('');
 

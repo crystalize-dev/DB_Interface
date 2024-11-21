@@ -1,3 +1,4 @@
+import { procedureNameType } from '@/app/types/ProcedureTypes';
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -5,7 +6,19 @@ const prisma = new PrismaClient();
 
 export async function GET() {
     try {
-        return NextResponse.json(await prisma.customers.findMany(), {
+        const response = await fetch('http://localhost:3000/api/procedures', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                procedureName: 'decrypt-data'
+            } as {
+                procedureName: procedureNameType;
+            })
+        });
+
+        return NextResponse.json(await response.json(), {
             status: 200
         });
     } catch (error) {
@@ -52,6 +65,17 @@ export async function POST(req: NextRequest) {
             }
         });
 
+        await fetch('http://localhost:3000/api/procedures', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                procedureName: 'encrypt-data',
+                customerID: newCustomer.CustomerID
+            } as { procedureName: procedureNameType })
+        });
+
         return NextResponse.json(newCustomer, { status: 201 });
     } catch (error) {
         return NextResponse.json({ error: error }, { status: 500 });
@@ -61,21 +85,31 @@ export async function POST(req: NextRequest) {
 export async function PUT(req: NextRequest) {
     const newCustomer = await req.json();
 
+    const updatedCustomer = await prisma.customers.update({
+        data: {
+            FirstName: newCustomer.FirstName,
+            LastName: newCustomer.LastName,
+            PhoneNumber: newCustomer.PhoneNumber,
+            BirthDate: newCustomer.BirthDate,
+            Address: newCustomer.Address,
+            Email: newCustomer.Email
+        },
+        where: { CustomerID: newCustomer.CustomerID }
+    });
+
+    await fetch('http://localhost:3000/api/procedures', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            procedureName: 'encrypt-data',
+            customerID: updatedCustomer.CustomerID
+        } as { procedureName: procedureNameType })
+    });
+
     try {
-        return NextResponse.json(
-            await prisma.customers.update({
-                data: {
-                    FirstName: newCustomer.FirstName,
-                    LastName: newCustomer.LastName,
-                    PhoneNumber: newCustomer.PhoneNumber,
-                    BirthDate: newCustomer.BirthDate,
-                    Address: newCustomer.Address,
-                    Email: newCustomer.Email
-                },
-                where: { CustomerID: newCustomer.CustomerID }
-            }),
-            { status: 200 }
-        );
+        return NextResponse.json(updatedCustomer, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: error }, { status: 500 });
     }

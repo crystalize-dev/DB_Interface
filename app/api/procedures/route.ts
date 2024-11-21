@@ -5,7 +5,10 @@ import { NextRequest, NextResponse } from 'next/server';
 const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
-    const { procedureName }: { procedureName: procedureNameType } =
+    const {
+        procedureName,
+        customerID
+    }: { procedureName: procedureNameType; customerID: number } =
         await req.json();
 
     try {
@@ -23,6 +26,17 @@ export async function POST(req: NextRequest) {
             case 'sales-by-month':
                 var data = await prisma.$queryRaw`EXEC ReportMonthlySales`;
 
+                return NextResponse.json(data, { status: 200 });
+            case 'encrypt-data':
+                var data =
+                    await prisma.$queryRaw`EXEC EncryptCustomerData @CustomerID = ${String(customerID)}`;
+                return NextResponse.json(data, { status: 200 });
+            case 'decrypt-data':
+                var data = await prisma.$queryRaw`EXEC DecryptCustomerData`;
+                return NextResponse.json(data, { status: 200 });
+            case 'decrypt-one-customer':
+                var data =
+                    await prisma.$queryRaw`EXEC DecryptOneCustomer @CustomerID = ${String(customerID)}`;
                 return NextResponse.json(data, { status: 200 });
             default:
                 return NextResponse.json(
